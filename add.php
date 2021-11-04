@@ -3,7 +3,7 @@ include '../header.php';
 include '../config.php';
 ?>
 
-<form action="add.php" method="post">
+<form action="./add.php" method="post">
     <div class="form-group row">
         <label for="" class="col-sm-2 col-form-label">Mã số</label>
         <div class="col-sm-10">
