@@ -1,11 +1,9 @@
 <?php
 include './header.php';
 include './config.php';
-$id = $_GET['id'];
 ?>
-<a href="./index.php" class="btn btn-success">Quay lại</a>
-<h2>Thay đổi thông tin </h2>
-<form action ="" method="post">
+<a href="./index.php" class="btn btn-primary">Quay lại</a>
+<form action="./add.php " method="post">
     <div class="form-group row">
         <label for="" class="col-sm-2 col-form-label">Mã số</label>
         <div class="col-sm-10">
@@ -40,20 +38,26 @@ $id = $_GET['id'];
 
 </form>
 
+
 <?php
 if (isset($_POST['Save'])) {
-    $name = $_POST['name'];
+    $id = $_POST['user_id'];
+    $name = $_POST['name']; 
     $email = $_POST['email'];
     $password = $_POST['password'];
-    //? câu lệnh truy vấn 
-   $sql = "UPDATE `users` SET user_id = '$id', name = '$name' , email = '$email', password = '$password' WHERE user_id = $id";
-    //? kiểm tra và thực thi câu lệnh
+    //? câu lệnh
+    $sql = "INSERT INTO users(user_id, name, email, password )
+    VALUES ('$id','$name', '$email','$password' )";
+
+    //? kiểm tra và thực thi lệnh
     if (mysqli_query($conn, $sql)) {
         header('location:./index.php');
     } else {
-        header('location:error.php');
+        header('location:Error.php');
     }
 }
+
+
 //? đóng kết nối
 mysqli_close($conn);
 

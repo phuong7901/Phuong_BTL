@@ -1,67 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTL</title>
-    <link rel="stylesheet" href="css/style.css">
-    
-</head>
-<body>
-    <div>
+<?php include './header.php'; ?>
 
-    <div class="container">
-        <header>
-            <a href="#"><img src="img/Logo.png" alt=""></a>
-            <div class="menu">
-            
-            <a href="register.php">
-                <span>Đăng Ký</span>
-            </a>
-            <a href="login.php">
-                <span>Đăng Nhập</span>
-            </a>
-           
-
-           </div>
-    
-        </header>
+<a href="./add.php" class="btn btn-success">Thêm</a>
+<a href="./detail.php" class="btn btn-success "> Dự án</a>
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th scope="col">Mã số</th>
+            <th scope="col">Họ Tên</th>          
+            <th scope="col">Email</th>
+            <th scope="col">Mật khẩu</th>
+            <th class="col" scope="col">Tùy chọn</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--xuất dữ liệu theo CSDL -->
+        <?php
+        //* B1: mở kết nối
+        //* include './config.php';
         
-        <section class="content">
-            <div class="post">
-                <div class="post-content">
-                    <div class="Email">
-                        <h1>Trello giúp các nhóm đẩy nhanh công việc.</h1>
-                         <p>Cộng tác, quản lý dự án và đạt đến đỉnh cao năng suất mới.
-                          Từ tòa nhà cao tầng đến văn phòng tại nhà,
-                          cách thức làm việc của nhóm bạn là duy nhất.
-                          Hãy hoàn thành tất cả với Trello.</p>
-                          <h3>Đăng ký để bắt đầu</h3>
-                          <p>Bắt đầu với bảng Trello,danh sách và thẻ.
-                           Tùy chỉnh và mở rộng với nhiều tính năng hơn khi hoạt động làm việc nhóm phát triển.
-                           Quản lý dự án, sắp xếp tác vụ và tạo tinh thần làm việc nhóm—tất cả ở cùng một nơi.
-                           </p>
-                          
-                            
-                          <div class="post-img">
-                              <img src="img/anh2.png" while=100%>
-                              
-                          </div>
-                                              
-                    </div>
-                     
-                </div>
-                <div class="post-img1">
-                    <img src="img/anh1.png" while 100%>
-        
-                </div>
-               
-                </div>
-            </div>
+    //Start Session
+    session_start();
 
-        </section>
-    <?php include('footer.php'); ?>
 
-</body>
-</html>
+    //Create Constants to Store Non Repeating Values
+    define('SITEURL', 'http://localhost/db_quanli/');
+    define('LOCALHOST', 'localhost');
+    define('DB_USERNAME', 'root');
+    define('DB_PASSWORD', '');
+    define('DB_NAME', 'db_quanli');
+    
+    $conn = mysqli_connect(LOCALHOST, DB_USERNAME, DB_PASSWORD) or die(mysqli_error()); //Database Connection
+    $db_select = mysqli_select_db($conn, DB_NAME) or die(mysqli_error()); //SElecting Database   
+        //* B2: Truy vấn
+        $sql = "SELECT * FROM users ";
+
+        //? lưu kết quả trả về $result
+        $result = mysqli_query($conn, $sql);
+
+        //* B3: Phân tích sử lý kết quả
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<tr>";
+                echo '<td>' . $row['user_id'] . '</td>';
+                echo '<td>' . $row['name'] . '</td>';
+                echo '<td>' . $row['email'] . '</td>';
+                echo '<td>' . $row['password'] . '</td>';
+                echo '<td>
+                <a href="./edit.php?id=' . $row['user_id'] . '" class="btn btn-success">Sửa</a>
+                <a href="./delete.php?id=' . $row['user_id'] . '" class="btn btn-danger">Xoá</a>
+                </td>';
+                echo '</tr>';
+            }
+        }
+        //* B4: đóng kết nối
+        mysqli_close($conn);
+        ?>
+    </tbody>
+</table>
+<?php include './footer.php' ?>
